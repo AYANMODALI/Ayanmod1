@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AYAN PORTAL · Key Gateway</title>
+<style>
+:root{--bg:#0a0c10;--bg2:#11141c;--cy:#00f2fe;--bl:#4facfe;--gr:#00ff88;--am:#ffaa00;--red:#ff4d4d;--tx:#fff;--mut:#9aa6b8;--ln:rgba(0,242,254,.28);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;background-color:var(--bg);background-image:radial-gradient(circle at 15% 0%,rgba(0,242,254,.13),transparent 45%),radial-gradient(circle at 90% 100%,rgba(79,172,254,.1),transparent 45%);background-attachment:fixed;color:var(--tx);font:16px/1.5 ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 40px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{font-weight:800;letter-spacing:.18em;font-size:15px;padding:8px 14px;border:1px solid var(--ln);border-radius:999px;background:rgba(17,20,28,.7)}
+.logo b{color:var(--cy);text-shadow:0 0 10px var(--cy)}
+.badge{display:flex;align-items:center;gap:8px;font:700 12px ui-monospace,Consolas,monospace;letter-spacing:.14em;color:var(--gr);border:1px solid var(--gr);padding:6px 12px;border-radius:999px}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gr);animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,.7)}50%{box-shadow:0 0 0 7px rgba(0,255,136,0)}}
+@keyframes glow{0%,100%{box-shadow:0 0 14px rgba(0,255,136,.4)}50%{box-shadow:0 0 30px rgba(0,255,136,.85)}}
+.card{background:rgba(17,20,28,.62);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--ln);border-radius:20px;padding:20px;box-shadow:0 0 24px rgba(0,242,254,.07);margin-top:16px}
+h1{font-size:26px;line-height:1.2;margin:0 0 6px}
+h2{font-size:17px;margin:12px 0 0;letter-spacing:.04em}
+.sub,.meta{color:var(--mut);margin:0}
+.meta{font-size:14px;text-align:center}
+.btn{display:block;width:100%;border:0;border-radius:999px;padding:16px 20px;font-family:inherit;font-weight:800;font-size:15px;line-height:1.2;letter-spacing:.08em;color:#04121a;background:linear-gradient(90deg,var(--cy),var(--bl));cursor:pointer;box-shadow:0 0 18px rgba(0,242,254,.4);transition:transform .15s}
+.btn:active:not(:disabled){transform:scale(.98)}
+.btn small{display:block;font-weight:600;opacity:.75;letter-spacing:.04em;margin-top:4px}
+.btn.go{background:var(--gr);animation:glow 1.6s infinite}
+.btn:disabled{background:#1a1f2b;color:var(--am);box-shadow:none;border:1px solid rgba(255,170,0,.4);cursor:not-allowed;animation:none}
+.btn.ghost{background:transparent;color:var(--cy);border:1px solid var(--ln);box-shadow:none}
+.btn+.btn{margin-top:12px}
+.steprow{display:flex;gap:12px;align-items:center;margin-top:16px}
+.pill{font:700 12px ui-monospace,Consolas,monospace;letter-spacing:.12em;color:var(--cy);border:1px solid var(--ln);border-radius:999px;padding:5px 12px;white-space:nowrap}
+.dots{display:flex;gap:6px;flex:1}
+.dots i{flex:1;height:5px;border-radius:9px;background:#1f2533}
+.dots i.d{background:var(--gr)}
+.dots i.c{background:var(--cy);box-shadow:0 0 8px var(--cy)}
+.stxt{font:700 13px ui-monospace,Consolas,monospace;letter-spacing:.06em;color:var(--am)}
+.stxt.ok{color:var(--gr);font-size:15px}
+.bar{height:8px;border-radius:99px;background:#1a1f2b;overflow:hidden;margin:12px 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--gr));box-shadow:0 0 12px var(--cy);transition:width .3s linear}
+#msg{font:13px ui-monospace,Consolas,monospace;color:var(--cy);margin:0;min-height:20px}
+/* ===== AD SLOTS ===== */
+.ad{position:relative;max-width:100%;overflow:hidden;min-height:90px;margin-top:16px;border:1px dashed rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.02)}
+.ad.tall{min-height:250px}
+.ad>span{position:absolute;inset:0;display:grid;place-items:center;font:11px ui-monospace,Consolas,monospace;letter-spacing:.15em;color:#5b6678;text-align:center}
+.ad>:not(span){position:relative;z-index:1;max-width:100%}
+.ad iframe,.ad img,.ad ins{max-width:100%}
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(5,7,10,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:grid;place-items:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));overflow-y:auto}
+.modal{width:100%;max-width:440px;border-color:var(--am);margin:0}
+.modal .btn{margin-top:16px}
+.tag{display:inline-block;font:700 11px ui-monospace,Consolas,monospace;letter-spacing:.18em;color:var(--am);border:1px solid var(--am);border-radius:999px;padding:3px 10px}
+.key{font:800 28px ui-monospace,Consolas,monospace;letter-spacing:.2em;text-align:center;color:var(--gr);text-shadow:0 0 14px rgba(0,255,136,.6);border:1px solid rgba(0,255,136,.4);border-radius:14px;padding:18px 8px;margin:16px 0;word-break:break-all;background:rgba(0,255,136,.05);user-select:all}
+.countdown-box{font:700 15px ui-monospace,Consolas,monospace;color:var(--cy);background:rgba(0,242,254,.08);border:1px solid var(--ln);padding:10px;border-radius:12px;margin-top:14px;letter-spacing:.05em;text-align:center}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--bg2);border:1px solid var(--gr);color:var(--gr);padding:10px 18px;border-radius:999px;font:700 13px ui-monospace,Consolas,monospace;transition:.25s;z-index:60}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">AYAN <b>PORTAL</b></div>
+    <div class="badge" id="badge">START</div>
+  </header>
+
+  <!-- VIEW 1: duration selection (6 Ads Total, Buttons Exactly In The Middle) -->
+  <section id="v-home">
+    <div class="card">
+      <h1>AYAN KEY</h1>
+      <p class="sub">Choose your session length, then complete the verification steps to unlock your key.</p>
+    </div>
+
+    <!-- Home Ad 1 -->
+    <div class="ad" id="homeAd1">
+      <!-- HOME_AD_1 -->
+      <span>AD SLOT 1 · BANNER</span>
+    </div>
+
+    <!-- Home Ad 2 -->
+    <div class="ad" id="homeAd2">
+      <!-- HOME_AD_2 -->
+      <span>AD SLOT 2 · BANNER</span>
+    </div>
+
+    <!-- Home Ad 3 -->
+    <div class="ad tall" id="homeAd3">
+      <!-- HOME_AD_3 -->
+      <span>AD SLOT 3 · INTERSTITIAL</span>
+    </div>
+
+    <!-- Buttons Card (In The Middle) -->
+    <div class="card">
+      <button class="btn" data-total="4">3 HOURS<small>4-step verification</small></button>
+      <button class="btn" data-total="6">6 HOURS<small>6-step verification</small></button>
+    </div>
+
+    <!-- Home Ad 4 -->
+    <div class="ad" id="homeAd4">
+      <!-- HOME_AD_4 -->
+      <span>AD SLOT 4 · BANNER</span>
+    </div>
+
+    <!-- Home Ad 5 -->
+    <div class="ad" id="homeAd5">
+      <!-- HOME_AD_5 -->
+      <span>AD SLOT 5 · BANNER</span>
+    </div>
+
+    <!-- Home Ad 6 -->
+    <div class="ad tall" id="homeAd6">
+      <!-- HOME_AD_6 -->
+      <span>AD SLOT 6 · INTERSTITIAL</span>
+    </div>
+  </section>
+
+  <!-- VIEW 2: step verification (7 Ads Total, Continue Button In The Middle) -->
+  <section id="v-verify" hidden>
+    <div class="steprow"><span class="pill" id="stepLbl"></span><div class="dots" id="dots"></div></div>
+    <div class="card">
+      <div class="stxt" id="statusTxt"></div>
+      <div class="bar"><i id="bar"></i></div>
+      <p id="msg"></p>
+    </div>
+
+    <!-- Step Ad 1 -->
+    <div class="ad" id="stepAd1">
+      <!-- STEP_AD_1 -->
+      <span>AD SLOT 1 · BANNER</span>
+    </div>
+
+    <!-- Step Ad 2 -->
+    <div class="ad" id="stepAd2">
+      <!-- STEP_AD_2 -->
+      <span>AD SLOT 2 · BANNER</span>
+    </div>
+
+    <!-- Step Ad 3 -->
+    <div class="ad tall" id="stepAd3">
+      <!-- STEP_AD_3 -->
+      <span>AD SLOT 3 · INTERSTITIAL</span>
+    </div>
+
+    <!-- Continue Button (In The Middle) -->
+    <button class="btn go" id="nextBtn" style="margin-top:16px" hidden>CONTINUE TO NEXT STEP</button>
+
+    <!-- Step Ad 4 -->
+    <div class="ad" id="stepAd4">
+      <!-- STEP_AD_4 -->
+      <span>AD SLOT 4 · BANNER</span>
+    </div>
+
+    <!-- Step Ad 5 -->
+    <div class="ad" id="stepAd5">
+      <!-- STEP_AD_5 -->
+      <span>AD SLOT 5 · BANNER</span>
+    </div>
+
+    <!-- Step Ad 6 -->
+    <div class="ad tall" id="stepAd6">
+      <!-- STEP_AD_6 -->
+      <span>AD SLOT 6 · INTERSTITIAL</span>
+    </div>
+
+    <!-- Step Ad 7 -->
+    <div class="ad" id="stepAd7">
+      <!-- STEP_AD_7 -->
+      <span>AD SLOT 7 · BANNER</span>
+    </div>
+  </section>
+
+  <!-- VIEW 3: key ready (Locked Until Expiry) -->
+  <section id="v-done" hidden>
+    <div class="card">
+      <h1>✔ VERIFICATION COMPLETE</h1>
+      <p class="sub">Congratulations! All steps are validated. Your active key is ready.</p>
+      <div class="key" id="keyTxt">------</div>
+      <button class="btn go" id="copyBtn">COPY KEY</button>
+      
+      <div class="countdown-box" id="timerBox">
+        KEY EXPIRES IN: <span id="timeLeft">00:00:00</span>
+      </div>
+      <p class="meta" id="expTxt" style="margin-top:16px"></p>
+    </div>
+    <button class="btn ghost" id="resetBtn" style="margin-top:16px" disabled>START NEW SESSION (LOCKED)</button>
+  </section>
+</div>
+
+<!-- Sponsored modal (locked 20s per step) -->
+<div class="overlay" id="modal" role="dialog" aria-modal="true" hidden>
+  <div class="card modal">
+    <span class="tag">SPONSORED</span>
+    <h2 id="mTitle"></h2>
+    <div class="ad" id="adModal">
+      <!-- AD_SLOT_MODAL -->
+      <span>AD SLOT · SPONSORED</span>
+    </div>
+    <button class="btn" id="mBtn" disabled></button>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const AD_SECS = 20, STEP_SECS = 15;
+const FIREBASE_DB_URL = "https://ayan-5b26c-default-rtdb.firebaseio.com";
+
+const MSGS = [
+  "Connecting to Firebase Database node...",
+  "Security tokens are matched against network servers",
+  "Validating hardware token...",
+  "Handshaking with gateway...",
+  "Finalizing session signature..."
+];
+let S = {}, stop = () => {}, timerInterval = null;
+
+const save = () => { try { localStorage.setItem("ayan_portal_key_state", JSON.stringify(S)); } catch (e) {} };
+const load = () => { try { return JSON.parse(localStorage.getItem("ayan_portal_key_state")); } catch (e) { return null; } };
+
+function show(id) {
+  ["v-home", "v-verify", "v-done"].forEach(v => $(v).hidden = v !== id);
+  $("badge").textContent = id === "v-home" ? "START" : id === "v-done" ? "ACTIVE" : "SECURED";
+  window.scrollTo(0, 0);
+}
+
+function run(secs, tick, done) {
+  stop();
+  const end = Date.now() + secs * 1000;
+  let id;
+  const t = () => {
+    const ms = end - Date.now();
+    if (ms <= 0) { stop(); tick(0, 1); done(); return; }
+    tick(Math.ceil(ms / 1000), 1 - ms / (secs * 1000));
+  };
+  stop = () => { clearInterval(id); document.removeEventListener("visibilitychange", t); stop = () => {}; };
+  id = setInterval(t, 250);
+  document.addEventListener("visibilitychange", t);
+  t();
+}
+
+function startFlow(total) { 
+  if (S && S.done && S.exp && Date.now() < S.exp) {
+    showDone();
+    return;
+  }
+  S = { total, step: 1 }; 
+  save(); 
+  step(); 
+}
+
+function step() {
+  show("v-verify");
+  $("stepLbl").textContent = `STEP ${S.step}/${S.total}`;
+  $("dots").innerHTML = Array.from({ length: S.total }, (_, i) => `<i class="${i + 1 < S.step ? "d" : i + 1 === S.step ? "c" : ""}"></i>`).join("");
+  $("statusTxt").className = "stxt";
+  $("statusTxt").textContent = "AWAITING SPONSORED VERIFICATION...";
+  $("bar").style.width = "0%";
+  $("msg").textContent = "";
+  $("nextBtn").hidden = true;
+  openModal();
+}
+
+function openModal() {
+  const b = $("mBtn");
+  $("mTitle").textContent = `SPONSORED VERIFICATION (STEP ${S.step}/${S.total})`;
+  b.disabled = true; b.className = "btn";
+  $("modal").hidden = false;
+  run(AD_SECS,
+    left => { b.textContent = `PLEASE WAIT (${left}s)...`; },
+    () => { b.disabled = false; b.className = "btn go"; b.textContent = `CONTINUE TO STEP ${S.step}`; });
+}
+
+function verify() {
+  $("modal").hidden = true;
+  run(STEP_SECS,
+    (left, p) => {
+      $("statusTxt").textContent = `VERIFYING SESSION: PLEASE WAIT (${left}s)...`;
+      $("bar").style.width = (p * 100) + "%";
+      $("msg").textContent = MSGS[Math.min(MSGS.length - 1, Math.floor(p * MSGS.length))];
+    },
+    () => {
+      $("statusTxt").className = "stxt ok";
+      $("statusTxt").textContent = "✔ SESSION READY & VALIDATED!";
+      $("bar").style.width = "100%";
+      $("msg").textContent = "";
+      $("nextBtn").textContent = S.step < S.total ? "CONTINUE TO NEXT STEP" : "GENERATE MY KEY";
+      $("nextBtn").hidden = false;
+    });
+}
+
+// 6-अंकों का रैंडम नंबर जनरेटर
+function makeKey() {
+  const arr = new Uint32Array(1);
+  crypto.getRandomValues(arr);
+  const code = 100000 + (arr[0] % 900000);
+  return String(code);
+}
+
+// Firebase Realtime Database में Key स्टोर करने का फंक्शन
+async function saveKeyToFirebase(key, hrs, exp) {
+  const data = {
+    key: key,
+    duration_hours: hrs,
+    created_at: Date.now(),
+    expires_at: exp,
+    status: "active"
+  };
+  try {
+    await fetch(`${FIREBASE_DB_URL}/keys/${key}.json`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+  } catch (err) {
+    console.error("Firebase sync error:", err);
+  }
+}
+
+async function finish() {
+  const hrs = S.total === 4 ? 3 : 6;
+  const key = makeKey();
+  const exp = Date.now() + hrs * 3600000;
+  
+  S.key = key; 
+  S.hrs = hrs; 
+  S.exp = exp; 
+  S.done = true;
+  save(); 
+  
+  // बैकग्राउंड में Firebase में सेव करना
+  await saveKeyToFirebase(key, hrs, exp);
+  showDone();
+}
+
+function updateCountdown() {
+  const diff = S.exp - Date.now();
+  if (diff <= 0) {
+    clearInterval(timerInterval);
+    $("timeLeft").textContent = "EXPIRED";
+    $("timerBox").style.color = "var(--red)";
+    $("resetBtn").disabled = false;
+    $("resetBtn").textContent = "START NEW SESSION";
+    return;
+  }
+  const h = String(Math.floor(diff / 3600000)).padStart(2, "0");
+  const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
+  const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
+  $("timeLeft").textContent = `${h}:${m}:${s}`;
+}
+
+function showDone() {
+  show("v-done");
+  $("keyTxt").textContent = S.key;
+  $("expTxt").textContent = `Session length: ${S.hrs} hours · Expires: ${new Date(S.exp).toLocaleString()}`;
+  
+  const isExpired = Date.now() >= S.exp;
+  $("resetBtn").disabled = !isExpired;
+  $("resetBtn").textContent = isExpired ? "START NEW SESSION" : "START NEW SESSION (LOCKED)";
+  
+  clearInterval(timerInterval);
+  if (!isExpired) {
+    updateCountdown();
+    timerInterval = setInterval(updateCountdown, 1000);
+  } else {
+    $("timeLeft").textContent = "EXPIRED";
+  }
+}
+
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast.id);
+  toast.id = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+async function copyKey() {
+  let ok = false;
+  try { await navigator.clipboard.writeText(S.key); ok = true; }
+  catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = S.key; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand("copy"); } catch (e2) {}
+    ta.remove();
+  }
+  const b = $("copyBtn");
+  if (ok) {
+    b.textContent = "✔ COPIED!"; toast("Key copied to clipboard");
+    setTimeout(() => { b.textContent = "COPY KEY"; }, 2000);
+  } else toast("Copy failed: long-press the key to copy");
+}
+
+document.querySelectorAll("[data-total]").forEach(b => b.addEventListener("click", () => startFlow(+b.dataset.total)));
+$("mBtn").addEventListener("click", verify);
+$("nextBtn").addEventListener("click", () => { if (S.step < S.total) { S.step++; save(); step(); } else finish(); });
+$("copyBtn").addEventListener("click", copyKey);
+$("resetBtn").addEventListener("click", () => { 
+  if (Date.now() < S.exp) {
+    toast("Current key is still active!");
+    return;
+  }
+  stop(); 
+  clearInterval(timerInterval);
+  S = {}; 
+  try { localStorage.removeItem("ayan_portal_key_state"); } catch (e) {} 
+  show("v-home"); 
+});
+
+const saved = load();
+if (saved && saved.done && saved.key) { 
+  S = saved; 
+  showDone(); 
+} else if (saved && saved.step && saved.total) { 
+  S = saved; 
+  step(); 
+} else {
+  show("v-home");
+}
+</script>
+</body>
+</html>
