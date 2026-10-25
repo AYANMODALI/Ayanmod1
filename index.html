@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AYAN PORTAL · Key Gateway</title>
-<!-- Adsterra Global Script -->
+<!-- Adsterra Global Scripts -->
 <script data-cfasync="false" src="https://afders.org/1/ff40eb080454cbddb77a7773c1913f7c"></script>
+<script data-cfasync="false" src="https://bicea.org/14/219e785f4da9ba80fbee2285dbe5a550"></script>
 <style>
 :root{--bg:#0a0c10;--bg2:#11141c;--cy:#00f2fe;--bl:#4facfe;--gr:#00ff88;--am:#ffaa00;--red:#ff4d4d;--tx:#fff;--mut:#9aa6b8;--ln:rgba(0,242,254,.28);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -43,9 +44,18 @@ h2{font-size:17px;margin:12px 0 0;letter-spacing:.04em}
 .bar{height:8px;border-radius:99px;background:#1a1f2b;overflow:hidden;margin:12px 0}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--gr));box-shadow:0 0 12px var(--cy);transition:width .3s linear}
 #msg{font:13px ui-monospace,Consolas,monospace;color:var(--cy);margin:0;min-height:20px}
-/* ===== AD SLOTS ===== */
-.ad{position:relative;max-width:100%;overflow:hidden;min-height:90px;margin-top:16px;border:1px dashed rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.02);display:flex;justify-content:center;align-items:center}
-.ad.tall{min-height:250px}
+
+/* ===== AD SLOTS WITH IFRAME & DIRECT VIEW ===== */
+.ad{position:relative;width:100%;min-height:100px;margin-top:16px;border:1px dashed rgba(0,242,254,.3);border-radius:14px;background:rgba(255,255,255,.03);overflow:hidden;display:flex;justify-content:center;align-items:center}
+.ad.tall{min-height:260px}
+.ad iframe{width:100%;height:100%;min-height:100px;border:0;border-radius:12px}
+.ad.tall iframe{min-height:260px}
+
+/* Full Screen Interstitial Overlay */
+#interstitialAd{position:fixed;inset:0;z-index:999;background:rgba(5,7,10,.95);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:16px}
+#interstitialAd iframe{width:100%;height:85vh;max-width:480px;border:1px solid var(--cy);border-radius:16px}
+.ad-timer-badge{color:var(--am);font:700 14px ui-monospace,Consolas,monospace;margin-bottom:10px}
+
 .overlay{position:fixed;inset:0;z-index:50;background:rgba(5,7,10,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:grid;place-items:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));overflow-y:auto}
 .modal{width:100%;max-width:440px;border-color:var(--am);margin:0}
 .modal .btn{margin-top:16px}
@@ -58,6 +68,13 @@ h2{font-size:17px;margin:12px 0 0;letter-spacing:.04em}
 </style>
 </head>
 <body>
+
+<!-- 15-Sec Full Screen Interstitial Ad -->
+<div id="interstitialAd" hidden>
+  <div class="ad-timer-badge" id="adTimerText">SPONSORED AD (Closes in 15s)...</div>
+  <iframe id="interstitialIframe" src="about:blank"></iframe>
+</div>
+
 <div class="wrap">
   <header>
     <div class="logo">AYAN <b>PORTAL</b></div>
@@ -71,20 +88,10 @@ h2{font-size:17px;margin:12px 0 0;letter-spacing:.04em}
       <p class="sub">Choose your session length, then complete the verification steps to unlock your key.</p>
     </div>
 
-    <!-- Home Ad 1 -->
-    <div class="ad" id="homeAd1">
-      <script data-cfasync="false" src="https://bicea.org/14/219e785f4da9ba80fbee2285dbe5a550"></script>
-    </div>
-
-    <!-- Home Ad 2 -->
-    <div class="ad" id="homeAd2">
-      <script data-cfasync="false" src="https://afders.org/1/ff40eb080454cbddb77a7773c1913f7c"></script>
-    </div>
-
-    <!-- Home Ad 3 -->
-    <div class="ad tall" id="homeAd3">
-      <script data-cfasync="false" src="https://bicea.org/14/219e785f4da9ba80fbee2285dbe5a550"></script>
-    </div>
+    <!-- Home Ads with iframe rendering -->
+    <div class="ad"><iframe class="ad-frame"></iframe></div>
+    <div class="ad"><iframe class="ad-frame"></iframe></div>
+    <div class="ad tall"><iframe class="ad-frame"></iframe></div>
 
     <!-- Buttons Card (In The Middle) -->
     <div class="card">
@@ -92,20 +99,9 @@ h2{font-size:17px;margin:12px 0 0;letter-spacing:.04em}
       <button class="btn" data-total="6">6 HOURS<small>6-step verification</small></button>
     </div>
 
-    <!-- Home Ad 4 -->
-    <div class="ad" id="homeAd4">
-      <script data-cfasync="false" src="https://afders.org/1/ff40eb080454cbddb77a7773c1913f7c"></script>
-    </div>
-
-    <!-- Home Ad 5 -->
-    <div class="ad" id="homeAd5">
-      <script data-cfasync="false" src="https://bicea.org/14/219e785f4da9ba80fbee2285dbe5a550"></script>
-    </div>
-
-    <!-- Home Ad 6 -->
-    <div class="ad tall" id="homeAd6">
-      <script data-cfasync="false" src="https://afders.org/1/ff40eb080454cbddb77a7773c1913f7c"></script>
-    </div>
+    <div class="ad"><iframe class="ad-frame"></iframe></div>
+    <div class="ad"><iframe class="ad-frame"></iframe></div>
+    <div class="ad tall"><iframe class="ad-frame"></iframe></div>
   </section>
 
   <!-- VIEW 2: step verification -->
@@ -117,43 +113,18 @@ h2{font-size:17px;margin:12px 0 0;letter-spacing:.04em}
       <p id="msg"></p>
     </div>
 
-    <!-- Step Ad 1 -->
-    <div class="ad" id="stepAd1">
-      <script data-cfasync="false" src="https://bicea.org/14/219e785f4da9ba80fbee2285dbe5a550"></script>
-    </div>
-
-    <!-- Step Ad 2 -->
-    <div class="ad" id="stepAd2">
-      <script data-cfasync="false" src="https://afders.org/1/ff40eb080454cbddb77a7773c1913f7c"></script>
-    </div>
-
-    <!-- Step Ad 3 -->
-    <div class="ad tall" id="stepAd3">
-      <script data-cfasync="false" src="https://bicea.org/14/219e785f4da9ba80fbee2285dbe5a550"></script>
-    </div>
+    <!-- Step Ads -->
+    <div class="ad"><iframe class="ad-frame"></iframe></div>
+    <div class="ad"><iframe class="ad-frame"></iframe></div>
+    <div class="ad tall"><iframe class="ad-frame"></iframe></div>
 
     <!-- Continue Button (In The Middle) -->
     <button class="btn go" id="nextBtn" style="margin-top:16px" hidden>CONTINUE TO NEXT STEP</button>
 
-    <!-- Step Ad 4 -->
-    <div class="ad" id="stepAd4">
-      <script data-cfasync="false" src="https://afders.org/1/ff40eb080454cbddb77a7773c1913f7c"></script>
-    </div>
-
-    <!-- Step Ad 5 -->
-    <div class="ad" id="stepAd5">
-      <script data-cfasync="false" src="https://bicea.org/14/219e785f4da9ba80fbee2285dbe5a550"></script>
-    </div>
-
-    <!-- Step Ad 6 -->
-    <div class="ad tall" id="stepAd6">
-      <script data-cfasync="false" src="https://afders.org/1/ff40eb080454cbddb77a7773c1913f7c"></script>
-    </div>
-
-    <!-- Step Ad 7 -->
-    <div class="ad" id="stepAd7">
-      <script data-cfasync="false" src="https://bicea.org/14/219e785f4da9ba80fbee2285dbe5a550"></script>
-    </div>
+    <div class="ad"><iframe class="ad-frame"></iframe></div>
+    <div class="ad"><iframe class="ad-frame"></iframe></div>
+    <div class="ad tall"><iframe class="ad-frame"></iframe></div>
+    <div class="ad"><iframe class="ad-frame"></iframe></div>
   </section>
 
   <!-- VIEW 3: key ready -->
@@ -178,8 +149,8 @@ h2{font-size:17px;margin:12px 0 0;letter-spacing:.04em}
   <div class="card modal">
     <span class="tag">SPONSORED</span>
     <h2 id="mTitle"></h2>
-    <div class="ad" id="adModal">
-      <script data-cfasync="false" src="https://bicea.org/14/219e785f4da9ba80fbee2285dbe5a550"></script>
+    <div class="ad tall">
+      <iframe id="modalAdFrame" class="ad-frame"></iframe>
     </div>
     <button class="btn" id="mBtn" disabled></button>
   </div>
@@ -193,36 +164,63 @@ const AD_SECS = 20, STEP_SECS = 15;
 const BASE_DIRECT_LINK = "https://arwf.org/4/364027e0deb1226ffe6f256a9208a984";
 const FIREBASE_DB_URL = "https://ayan-5b26c-default-rtdb.firebaseio.com";
 
-// स्मार्टलिंक URL रोटेशन (हर बार फ्रेश एड दिखाने के लिए कैश बस्टर)
+// स्मार्टलिंक रोटेशन
 function getRotatedAdLink() {
-  return `${BASE_DIRECT_LINK}?t=${Date.now()}&rand=${Math.floor(Math.random() * 999999)}`;
+  return `${BASE_DIRECT_LINK}?t=${Date.now()}&rand=${Math.floor(Math.random() * 9999999)}`;
 }
 
-// हाई-सीपीएम डायरेक्ट एड ओपनर
+// सभी एड फ्रेम्स को फ्रेश लोड करने का फंक्शन
+function refreshAllAdFrames() {
+  document.querySelectorAll(".ad-frame").forEach(iframe => {
+    iframe.src = getRotatedAdLink();
+  });
+}
+
+// 15 सेकंड का फुल स्क्रीन इंटरस्टिशियल एड दिखाना
+function showFullScreenAd(callback) {
+  const overlay = $("interstitialAd");
+  const iframe = $("interstitialIframe");
+  const timerTxt = $("adTimerText");
+  iframe.src = getRotatedAdLink();
+  overlay.hidden = false;
+  
+  let left = 15;
+  timerTxt.textContent = `SPONSORED AD (Closes in ${left}s)...`;
+  const timer = setInterval(() => {
+    left--;
+    if (left > 0) {
+      timerTxt.textContent = `SPONSORED AD (Closes in ${left}s)...`;
+    } else {
+      clearInterval(timer);
+      overlay.hidden = true;
+      iframe.src = "about:blank";
+      if (callback) callback();
+    }
+  }, 1000);
+}
+
+// बटन क्लिक पर पॉपअप/नया टैब एड
 function triggerDirectAd() {
   try {
-    const adUrl = getRotatedAdLink();
-    window.open(adUrl, "_blank");
-  } catch(e) {
-    console.error("Ad trigger error:", e);
-  }
+    window.open(getRotatedAdLink(), "_blank");
+  } catch(e) {}
 }
 
-// बैक-बटन ट्रैप (जब भी कोई बैक करे या एग्जिट करे तो एड खुले)
+// बैक-बटन ट्रैप (जब भी कोई बैक करे तो एड खुले)
 function setupBackAdTrap() {
   try {
     window.history.pushState({ page: 1 }, "", "");
-    window.onpopstate = function (event) {
+    window.onpopstate = function () {
       window.location.href = getRotatedAdLink();
     };
   } catch(e) {}
 }
 setupBackAdTrap();
 
-// जब यूजर टैब पर वापस लौटे (Tab focus change)
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
     setupBackAdTrap();
+    refreshAllAdFrames();
   }
 });
 
@@ -243,6 +241,7 @@ function show(id) {
   $("badge").textContent = id === "v-home" ? "START" : id === "v-done" ? "ACTIVE" : "SECURED";
   window.scrollTo(0, 0);
   setupBackAdTrap();
+  refreshAllAdFrames();
 }
 
 function run(secs, tick, done) {
@@ -268,7 +267,9 @@ function startFlow(total) {
   }
   S = { total, step: 1 }; 
   save(); 
-  step(); 
+  showFullScreenAd(() => {
+    step();
+  });
 }
 
 function step() {
@@ -288,6 +289,7 @@ function openModal() {
   $("mTitle").textContent = `SPONSORED VERIFICATION (STEP ${S.step}/${S.total})`;
   b.disabled = true; b.className = "btn";
   $("modal").hidden = false;
+  $("modalAdFrame").src = getRotatedAdLink();
   run(AD_SECS,
     left => { b.textContent = `PLEASE WAIT (${left}s)...`; },
     () => { b.disabled = false; b.className = "btn go"; b.textContent = `CONTINUE TO STEP ${S.step}`; });
@@ -415,7 +417,13 @@ document.querySelectorAll("[data-total]").forEach(b => b.addEventListener("click
 $("mBtn").addEventListener("click", verify);
 $("nextBtn").addEventListener("click", () => { 
   triggerDirectAd(); 
-  if (S.step < S.total) { S.step++; save(); step(); } else finish(); 
+  if (S.step < S.total) { 
+    S.step++; 
+    save(); 
+    showFullScreenAd(() => {
+      step();
+    });
+  } else finish(); 
 });
 $("copyBtn").addEventListener("click", copyKey);
 $("resetBtn").addEventListener("click", () => { 
@@ -430,6 +438,7 @@ $("resetBtn").addEventListener("click", () => {
   show("v-home"); 
 });
 
+// पेज लोड पर एड्स और स्टेट इनिशियलाइज़ेशन
 const saved = load();
 if (saved && saved.done && saved.key) { 
   S = saved; 
@@ -440,6 +449,7 @@ if (saved && saved.done && saved.key) {
 } else {
   show("v-home");
 }
+refreshAllAdFrames();
 </script>
 </body>
 </html>
